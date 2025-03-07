@@ -44,7 +44,8 @@ export default function AviatorGame() {
   };
 
   const cashOut = () => {
-    setCashOutAmount(graphData[graphData.length - 1].value);
+    const cashOutValue = graphData[graphData.length - 1].value;
+    setCashOutAmount(cashOutValue);
     setIsFlying(false);
     setCrashed(false);
   };
@@ -59,7 +60,7 @@ export default function AviatorGame() {
               <CartesianGrid strokeDasharray="3 3" stroke="gray" />
               <XAxis dataKey="time" type="number" domain={[0, 'auto']} stroke="white" />
               <YAxis domain={[parseFloat(betAmount) || 1.0, 'auto']} stroke="white" />
-              <Area type="monotone" dataKey="value" stroke="#4CAF50" fill="red" />
+              <Area type="monotone" dataKey="value" stroke="#4CAF50" fill="transparent" />
               <Scatter
                 data={[graphData[graphData.length - 1]]}
                 shape={({ cx, cy }) => (
@@ -73,7 +74,10 @@ export default function AviatorGame() {
         </div>
         <p className="absolute top-2 right-2 bg-black px-4 py-1 rounded text-yellow-400">Amount: {currentAmount.toFixed(2)}</p>
       </div>
-      {crashed && !cashOutAmount && <p className="text-red-500 text-lg font-semibold">Crashed!</p>}
+      {crashed && !cashOutAmount && <p className="text-red-500 font-semibold text-6xl">Crashed!</p>}
+      {cashOutAmount && (
+        <p className="text-green-400 font-semibold text-xl">You cashed out: {cashOutAmount.toFixed(2)} ({(cashOutAmount / (parseFloat(betAmount) || 1)).toFixed(2)}x)</p>
+      )}
       <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full max-w-md">
         <div className="flex flex-col items-center w-full">
           <label className="text-white mb-1">Bet Amount</label>
