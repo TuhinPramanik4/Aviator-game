@@ -4,7 +4,6 @@ import { Button } from "./Compontents/Button";
 
 export default function AviatorGame() {
   const [betAmount, setBetAmount] = useState("");
-  const [returnMultiplier, setReturnMultiplier] = useState(2.0);
   const [isFlying, setIsFlying] = useState(false);
   const [crashed, setCrashed] = useState(false);
   const [cashOutAmount, setCashOutAmount] = useState(null);
@@ -20,7 +19,7 @@ export default function AviatorGame() {
     if (isFlying) {
       interval = setInterval(() => {
         setGraphData((data) => {
-          const newAmount = data[data.length - 1].value + (0.03 * returnMultiplier * (parseFloat(betAmount) || 1.0));
+          const newAmount = data[data.length - 1].value + 0.03 * (parseFloat(betAmount) || 1.0);
           setCurrentAmount(newAmount);
           return [...data, { time: data.length, value: newAmount }];
         });
@@ -33,7 +32,7 @@ export default function AviatorGame() {
       }, crashTime);
     }
     return () => clearInterval(interval);
-  }, [isFlying, returnMultiplier, betAmount]);
+  }, [isFlying, betAmount]);
 
   const startGame = () => {
     setGraphData([{ time: 0, value: parseFloat(betAmount) || 1.0 }]);
@@ -88,17 +87,6 @@ export default function AviatorGame() {
             className="w-full p-3 text-black bg-white border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
             placeholder="Enter Bet Amount"
           />
-        </div>
-        <div className="flex flex-col items-center w-full">
-          <label className="text-white mb-1">Multiplier</label>
-          <select
-            value={returnMultiplier}
-            onChange={(e) => setReturnMultiplier(parseFloat(e.target.value))}
-            className="w-full p-3 text-black bg-white border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-          >
-            <option value={2}>2x</option>
-            <option value={4}>4x</option>
-          </select>
         </div>
       </div>
       <div className="flex space-x-4">
